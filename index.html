@@ -202,7 +202,7 @@ async function loadLocationData(){
     locationData = await districtRes.json();
 
     const cityRes = await fetch(
-      "https://raw.githubusercontent.com/recurze/IndianCities/master/final_cities.csv"
+      "https://raw.githubusercontent.com/planemad/india-local-government-directory/main/municipal-directory.csv"
     );
 
     const cityText = await cityRes.text();
@@ -212,13 +212,13 @@ async function loadLocationData(){
       .split("\n")
       .slice(1)
       .map(row => {
-        const parts = row.split(",");
-        return {
-          state: parts[0]?.trim(),
-          district: parts[1]?.trim(),
-          city: parts[2]?.trim()
-        };
-      });
+  const parts = row.split(",");
+  return {
+    state: parts[1]?.trim(),
+    district: parts[6]?.trim(),
+    city: parts[3]?.trim()
+  };
+});
 
     const state = document.getElementById("state");
 
@@ -273,8 +273,8 @@ function loadCities(){
 
   cityData
     .filter(item =>
-      item.state === state &&
-      item.district === district
+      item.state?.toLowerCase() === state.toLowerCase() &&
+item.district?.toLowerCase() === district.toLowerCase()
     )
     .sort((a,b) => a.city.localeCompare(b.city))
     .forEach(item => {
