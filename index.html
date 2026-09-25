@@ -1,215 +1,99 @@
-i<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MyDating</title>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f5f5f5;
-  overflow: hidden;
-}
-
-header {
-  height: 65px;
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 27px;
-  font-weight: bold;
-  color: #ff3158;
-  box-shadow: 0 2px 8px #ccc;
-}
-
-#area {
-  height: calc(100vh - 145px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-
-.card {
-  width: 350px;
-  max-width: 90vw;
-  height: 520px;
-  background: white;
-  border-radius: 22px;
-  overflow: hidden;
-  position: absolute;
-  box-shadow: 0 5px 25px #aaa;
-  touch-action: none;
-  user-select: none;
-}
-
-.card img {
-  width: 100%;
-  height: 75%;
-  object-fit: cover;
-}
-
-.info {
-  padding: 12px 18px;
-}
-
-.name {
-  font-size: 25px;
-  font-weight: bold;
-}
-
-.bio {
-  margin-top: 5px;
-  color: #777;
-}
-
-.buttons {
-  height: 80px;
-  background: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 35px;
-}
-
-button {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: none;
-  background: white;
-  box-shadow: 0 3px 12px #bbb;
-  font-size: 27px;
-}
-
-.no {
-  color: #ff4458;
-}
-
-.yes {
-  color: #21c77a;
-}
-
-#match {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 10;
-  background: linear-gradient(135deg,#ff3158,#ff7858);
-  color: white;
-  text-align: center;
-  padding-top: 150px;
-}
-
-#match h1 {
-  font-size: 48px;
-}
-
-#match button {
-  width: 180px;
-  border-radius: 30px;
-  color: #ff3158;
-}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f5f5;color:#222}
+.box{max-width:420px;margin:auto;padding:25px}
+h1{text-align:center;color:#ff3366}
+input,button{width:100%;box-sizing:border-box;padding:14px;margin:7px 0;border-radius:10px;border:1px solid #ddd;font-size:16px}
+button{background:#ff3366;color:white;border:0;font-weight:bold}
+.card{background:white;border-radius:18px;padding:20px;margin-top:20px;box-shadow:0 3px 15px #ddd}
+.hidden{display:none}
+.small{text-align:center;color:#666;font-size:14px}
 </style>
 </head>
 
 <body>
 
-<header>🔥 MyDating</header>
+<div class="box">
 
-<div id="area">
+<h1>🔥 MyDating</h1>
 
-<div class="card" id="card">
-  <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800">
+<div id="auth" class="card">
+<h2>Welcome</h2>
 
-  <div class="info">
-    <div class="name">Sofia, 24</div>
-    <div class="bio">Coffee • Travel • Music</div>
-  </div>
+<input id="email" type="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+
+<button onclick="signup()">Create account</button>
+<button onclick="login()">Login</button>
+
+<p id="msg" class="small"></p>
 </div>
 
+<div id="app" class="card hidden">
+<h2>You're logged in ❤️</h2>
+<p id="user"></p>
+
+<button onclick="logout()">Logout</button>
 </div>
 
-<div class="buttons">
-  <button class="no" onclick="swipeLeft()">✕</button>
-  <button class="yes" onclick="swipeRight()">♥</button>
-</div>
-
-<div id="match">
-  <h1>It's a Match! ❤️</h1>
-  <p>You both liked each other.</p>
-  <button onclick="closeMatch()">Continue</button>
 </div>
 
 <script>
 
-const card = document.getElementById("card");
+const SUPABASE_URL = "https://pgperzhczsoifkvdwshd.supabase.co";
+const SUPABASE_KEY = "sb_publishable_q2Ph4B0MXko-tkYPnB2-nA_cleEm3mh
+```";
 
-let startX = 0;
-let currentX = 0;
-let dragging = false;
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-card.addEventListener("pointerdown", function(e) {
-  dragging = true;
-  startX = e.clientX;
-  card.setPointerCapture(e.pointerId);
-});
+async function signup(){
+ const email=document.getElementById("email").value;
+ const password=document.getElementById("password").value;
 
-card.addEventListener("pointermove", function(e) {
-  if (!dragging) return;
+ const {error}=await db.auth.signUp({email,password});
 
-  currentX = e.clientX - startX;
-
-  card.style.transform =
-    "translateX(" + currentX + "px) rotate(" +
-    currentX / 15 + "deg)";
-});
-
-card.addEventListener("pointerup", function() {
-  dragging = false;
-
-  if (currentX > 120) {
-    swipeRight();
-  }
-  else if (currentX < -120) {
-    swipeLeft();
-  }
-  else {
-    card.style.transform = "";
-  }
-
-  currentX = 0;
-});
-
-function swipeRight() {
-  card.style.transform =
-    "translateX(600px) rotate(25deg)";
-
-  setTimeout(function() {
-    document.getElementById("match").style.display = "block";
-  }, 400);
+ document.getElementById("msg").textContent =
+ error ? error.message : "Account created. Check your email to confirm.";
 }
 
-function swipeLeft() {
-  card.style.transform =
-    "translateX(-600px) rotate(-25deg)";
+async function login(){
+ const email=document.getElementById("email").value;
+ const password=document.getElementById("password").value;
 
-  setTimeout(function() {
-    card.style.transform = "";
-    alert("Passed");
-  }, 400);
+ const {data,error}=await db.auth.signInWithPassword({email,password});
+
+ if(error){
+   document.getElementById("msg").textContent=error.message;
+   return;
+ }
+
+ showApp(data.user);
 }
 
-function closeMatch() {
-  document.getElementById("match").style.display = "none";
-  card.style.transform = "";
+async function logout(){
+ await db.auth.signOut();
+ showAuth();
 }
+
+function showApp(user){
+ document.getElementById("auth").classList.add("hidden");
+ document.getElementById("app").classList.remove("hidden");
+ document.getElementById("user").textContent="Logged in as "+user.email;
+}
+
+function showAuth(){
+ document.getElementById("auth").classList.remove("hidden");
+ document.getElementById("app").classList.add("hidden");
+}
+
+db.auth.getSession().then(({data})=>{
+ if(data.session) showApp(data.session.user);
+});
 
 </script>
 
