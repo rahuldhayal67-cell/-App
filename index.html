@@ -37,7 +37,17 @@ button{background:#ff3366;color:white;border:0;font-weight:bold}
 <div id="app" class="card hidden">
 <h2>You're logged in ❤️</h2>
 <p id="user"></p>
+<h3>Create your profile</h3>
 
+<input id="name" type="text" placeholder="Your name">
+
+<input id="age" type="number" placeholder="Your age">
+
+<textarea id="bio" placeholder="Tell something about yourself"></textarea>
+
+<button onclick="saveProfile()">Save Profile ❤️</button>
+
+<p id="profileMsg" class="small"></p>
 <button onclick="logout()">Logout</button>
 </div>
 
@@ -85,7 +95,14 @@ async function logout(){
  await db.auth.signOut();
  showAuth();
 }
+async function saveProfile(){
+  const name = document.getElementById("name").value;
+  const age = document.getElementById("age").value;
+  const bio = document.getElementById("bio").value;
 
+  document.getElementById("profileMsg").textContent =
+    "Profile saved ❤️";
+}
 function showApp(user){
  document.getElementById("auth").classList.add("hidden");
  document.getElementById("app").classList.remove("hidden");
