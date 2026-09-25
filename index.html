@@ -201,25 +201,7 @@ async function loadLocationData(){
 
     locationData = await districtRes.json();
 
-    const cityRes = await fetch(
-      "https://raw.githubusercontent.com/planemad/india-local-government-directory/main/municipal-directory.csv"
-    );
-
-    const cityText = await cityRes.text();
-
-    cityData = cityText
-      .trim()
-      .split("\n")
-      .slice(1)
-      .map(row => {
-  const parts = row.split(",");
-  return {
-    state: parts[1]?.trim(),
-    district: parts[6]?.trim(),
-    city: parts[3]?.trim()
-  };
-});
-
+    
     const state = document.getElementById("state");
 
     state.innerHTML = '<option value="">Select state</option>';
