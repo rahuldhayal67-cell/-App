@@ -63,31 +63,7 @@ select option {
 </select>
 
 <select id="state" onchange="loadDistricts()">
-  <option value="">Select state</option>
-  <option value="Rajasthan">Rajasthan</option>
-  <option value="Tamil Nadu">Tamil Nadu</option>
-  <option value="Maharashtra">Maharashtra</option>
-  <option value="Delhi">Delhi</option>
-  <option value="Karnataka">Karnataka</option>
-  <option value="Kerala">Kerala</option>
-  <option value="Gujarat">Gujarat</option>
-  <option value="Uttar Pradesh">Uttar Pradesh</option>
-  <option value="West Bengal">West Bengal</option>
-  <option value="Telangana">Telangana</option>
-  <option value="Andhra Pradesh">Andhra Pradesh</option>
-  <option value="Madhya Pradesh">Madhya Pradesh</option>
-  <option value="Haryana">Haryana</option>
-  <option value="Punjab">Punjab</option>
-  <option value="Bihar">Bihar</option>
-  <option value="Odisha">Odisha</option>
-  <option value="Assam">Assam</option>
-  <option value="Jharkhand">Jharkhand</option>
-  <option value="Chhattisgarh">Chhattisgarh</option>
-  <option value="Uttarakhand">Uttarakhand</option>
-  <option value="Goa">Goa</option>
-  <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-  <option value="Himachal Pradesh">Himachal Pradesh</option>
-  <option value="Other">Other</option>
+<option value="">Select state</option>
 </select>
 
 <select id="district" onchange="loadCities()">
@@ -214,50 +190,104 @@ async function login(){
  showApp(data.user);
 }
 
-const locations = {
-  Rajasthan: {
-    Sikar: ["Sikar", "Fatehpur", "Lachhmangarh", "Neem Ka Thana", "Reengus"],
-    Jaipur: ["Jaipur", "Amer", "Chomu", "Sanganer"],
-    Ajmer: ["Ajmer", "Kishangarh", "Beawar"],
-    Udaipur: ["Udaipur", "Gogunda", "Salumbar"]
-  },
+let locationData = [];
+let cityData = [];
 
-  "Tamil Nadu": {
-    Ariyalur: ["Ariyalur", "Jayankondam", "Andimadam"],
-    Chennai: ["Chennai"],
-    Coimbatore: ["Coimbatore", "Pollachi", "Mettupalayam"],
-    Madurai: ["Madurai", "Melur", "Thirumangalam"]
+async function loadLocationData(){
+  try {
+    const districtRes = await fetch(
+      "https://raw.githubusercontent.com/KTBsomen/Indian-state-district-json/main/india-states-districts-latest.json"
+    );
+
+    locationData = await districtRes.json();
+
+    const cityRes = await fetch(
+      "https://raw.githubusercontent.com/recurze/IndianCities/master/final_cities.csv"
+    );
+
+    const cityText = await cityRes.text();
+
+    cityData = cityText
+      .trim()
+      .split("\n")
+      .slice(1)
+      .map(row => {
+        const parts = row.split(",");
+        return {
+          state: parts[0]?.trim(),
+          district: parts[1]?.trim(),
+          city: parts[2]?.trim()
+        };
+      });
+
+    const state = document.getElementById("state");
+
+    state.innerHTML = '<option value="">Select state</option>';
+
+    locationData
+      .map(item => item.state)
+      .sort()
+      .forEach(s => {
+        state.innerHTML += `<option value="${s}">${s}</option>`;
+      });
+
+  } catch(error) {
+    console.error("Location data error:", error);
   }
-};
+}
 
 function loadDistricts(){
+
   const state = document.getElementById("state").value;
   const district = document.getElementById("district");
   const city = document.getElementById("city");
 
-  district.innerHTML = '<option value="">Select district</option>';
-  city.innerHTML = '<option value="">Select city</option>';
+  district.innerHTML =
+    '<option value="">Select district</option>';
 
-  if(locations[state]){
-    Object.keys(locations[state]).forEach(d => {
-      district.innerHTML += `<option value="${d}">${d}</option>`;
-    });
+  city.innerHTML =
+    '<option value="">Select city</option>';
+
+  const selectedState =
+    locationData.find(item => item.state === state);
+
+  if(selectedState){
+
+    selectedState.districts
+      .sort()
+      .forEach(d => {
+        district.innerHTML +=
+          `<option value="${d}">${d}</option>`;
+      });
   }
 }
 
 function loadCities(){
+
   const state = document.getElementById("state").value;
   const district = document.getElementById("district").value;
   const city = document.getElementById("city");
 
-  city.innerHTML = '<option value="">Select city</option>';
+  city.innerHTML =
+    '<option value="">Select city</option>';
 
-  if(locations[state] && locations[state][district]){
-    locations[state][district].forEach(c => {
-      city.innerHTML += `<option value="${c}">${c}</option>`;
+  cityData
+    .filter(item =>
+      item.state === state &&
+      item.district === district
+    )
+    .sort((a,b) => a.city.localeCompare(b.city))
+    .forEach(item => {
+      city.innerHTML +=
+        `<option value="${item.city}">${item.city}</option>`;
     });
-  }
 }
+
+loadLocationData();
+
+
+
+
 
 async function logout(){
  await db.auth.signOut();
