@@ -241,7 +241,8 @@ function loadDistricts(){
   const state = document.getElementById("state").value;
   const district = document.getElementById("district");
   const city = document.getElementById("city");
-
+city.parentElement.style.display =
+  state === "Rajasthan" ? "block" : "none";
   district.innerHTML =
     '<option value="">Select district</option>';
 
