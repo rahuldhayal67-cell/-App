@@ -398,7 +398,13 @@ select option {
   <div id="verificationStatus" class="small">
     Camera and microphone permission will be required.
   </div>
-
+<video
+  id="verificationCamera"
+  autoplay
+  playsinline
+  muted
+  style="width:100%; max-width:400px; border-radius:16px; margin-top:20px;"
+></video>
   <button onclick="startVerification()">
     Start Verification
   </button>
@@ -786,6 +792,32 @@ document.addEventListener("touchend", function(e){
   lastTouchEnd = now;
 
 }, {passive:false});
+  async function startVerification(){
+
+  const video = document.getElementById("verificationCamera");
+
+  try{
+
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video:{
+        facingMode:"user"
+      },
+      audio:false
+    });
+
+    video.srcObject = stream;
+
+    document.getElementById("verificationStatus").textContent =
+      "Camera is active. Look at the camera.";
+
+  }catch(error){
+
+    document.getElementById("verificationStatus").textContent =
+      "Camera permission was denied or unavailable.";
+
+  }
+
+}
 </script>
 
 </body>
