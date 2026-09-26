@@ -379,6 +379,31 @@ select option {
   </button>
 
 </div>
+  <div id="verificationPage" class="card hidden"
+     style="display:none; position:fixed; inset:0; z-index:9999; overflow-y:auto; margin:0; border-radius:0; width:100%; box-sizing:border-box;">
+
+  <button
+    onclick="backToPhotos()"
+    style="position:absolute; top:16px; left:16px; z-index:10; width:auto; padding:8px 12px;"
+  >
+    ← Back
+  </button>
+
+  <h2 style="margin-top:60px;">Face Verification 📷</h2>
+
+  <p class="small">
+    We need to verify that you are a real person.
+  </p>
+
+  <div id="verificationStatus" class="small">
+    Camera and microphone permission will be required.
+  </div>
+
+  <button onclick="startVerification()">
+    Start Verification
+  </button>
+
+</div>
 <p id="profileMsg" class="small"></p>
 <button onclick="logout()">Logout</button>
 </div>
@@ -663,7 +688,11 @@ function continueToVerification(){
     return;
   }
 
-  alert("Photos accepted. Face verification will open next.");
+  document.getElementById("photoPage").style.display = "none";
+  document.getElementById("photoPage").classList.add("hidden");
+
+  document.getElementById("verificationPage").classList.remove("hidden");
+  document.getElementById("verificationPage").style.display = "block";
 
 }
   document.getElementById("profilePhotos").addEventListener("change", function(){
