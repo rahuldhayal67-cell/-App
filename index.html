@@ -107,6 +107,71 @@ select {
 select option {
   font-size: 18px;
 }
+/* Fix interest buttons and dark mode */
+
+.interest-grid input[type="checkbox"]{
+  width:20px;
+  height:20px;
+  margin:0;
+  padding:0;
+  flex:0 0 20px;
+}
+
+.interest-grid label{
+  width:100%;
+  box-sizing:border-box;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:12px;
+  font-size:15px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  color:#222;
+  background:#fff;
+}
+
+.interest-grid p{
+  grid-column:1 / -1;
+  margin:14px 0 4px;
+  font-weight:700;
+  color:#222;
+}
+
+@media (prefers-color-scheme: dark){
+
+  .card,
+  .profile-section{
+    background:#1c1c1e !important;
+    color:#eee;
+    border-color:#444;
+  }
+
+  .profile-section h3,
+  .profile-section p,
+  .card h2,
+  .card h3,
+  .card p{
+    color:#eee;
+  }
+
+  .interest-grid label{
+    background:#2c2c2e;
+    color:#fff;
+    border-color:#555;
+  }
+
+  .interest-grid p{
+    color:#fff;
+  }
+
+  .small{
+    color:#aaa;
+  }
+}
 </style>
 </head>
 
