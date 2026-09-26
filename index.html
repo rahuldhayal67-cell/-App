@@ -331,11 +331,16 @@ select option {
 
 <button onclick="saveProfile()">Save Profile ❤️</button>
 </div>
-  <div id="photoPage" class="card hidden" style="display:none;">
-<button onclick="backToProfile()">
+  <div id="photoPage" class="card hidden"
+     style="display:none; position:fixed; inset:0; z-index:9999; overflow-y:auto; margin:0; border-radius:0; width:100%; box-sizing:border-box;">
+<button
+  onclick="backToProfile()"
+  style="position:absolute; top:16px; left:16px; z-index:10;"
+>
   ← Back
 </button>
-  <h2>Upload Your Photos 📸</h2>
+  
+    <h2 style="margin-top:60px;">Upload Your Photos 📸</h2>
 
   <p class="small">
     Add 2 to 5 photos to create your profile.
