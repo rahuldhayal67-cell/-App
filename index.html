@@ -793,6 +793,28 @@ document.addEventListener("touchend", function(e){
   lastTouchEnd = now;
 
 }, {passive:false});
+  function backToPhotos(){
+
+  const video =
+    document.getElementById("verificationCamera");
+
+  if(video.srcObject){
+
+    video.srcObject
+      .getTracks()
+      .forEach(track => track.stop());
+
+    video.srcObject = null;
+
+  }
+
+  document.getElementById("verificationPage").style.display = "none";
+  document.getElementById("verificationPage").classList.add("hidden");
+
+  document.getElementById("photoPage").style.display = "block";
+  document.getElementById("photoPage").classList.remove("hidden");
+
+}
  async function startVerification(){
 
   const video = document.getElementById("verificationCamera");
@@ -817,7 +839,9 @@ window.verificationNumber = number;
       "Your verification number is:<br><strong style='font-size:32px;'>" +
       number +
       "</strong><br><br>Remember this number.";
-startVoiceCheck();
+setTimeout(() => {
+  startVoiceCheck();
+}, 1500);
   }catch(error){
 
     document.getElementById("verificationStatus").textContent =
@@ -857,7 +881,7 @@ function startVoiceCheck(){
     if(spokenText.includes(expected)){
 
       document.getElementById("verificationStatus").textContent =
-        "Number verified ❤️";
+        "Number verified";
 
     }else{
 
