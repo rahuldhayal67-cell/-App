@@ -133,17 +133,33 @@ select option {
 <p id="user"></p>
 <h3>Create your profile</h3>
 
-<input id="name" type="text" placeholder="Your name">
+<div class="profile-section">
 
-<input id="age" type="number" placeholder="Your age">
+  <h3>Basic Information</h3>
 
-<select id="sex">
-  <option value="">Select sex</option>
-  <option value="Male">Male</option>
-  <option value="Female">Female</option>
-  <option value="Other">Other</option>
-</select>
+  <input
+    id="name"
+    type="text"
+    placeholder="Your name"
+  >
 
+  <input
+    id="age"
+    type="number"
+    placeholder="Your age"
+  >
+
+  <select id="sex">
+    <option value="">Select sex</option>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+    <option value="Other">Other</option>
+  </select>
+
+</div>
+<div class="profile-section">
+
+  <h3>Location</h3>
 <select id="state" onchange="loadDistricts()">
 <option value="">Select state</option>
 </select>
@@ -155,8 +171,12 @@ select option {
 <select id="city">
   <option value="">Select city</option>
 </select>
+</div>
+<div class="profile-section">
 
-<h3>What are you into? ❤️</h3>
+  <h3>What are you into? ❤️</h3>
+
+  <div class="interest-grid">
 
 <p>🎵 Music</p>
 <label><input type="checkbox" name="interest" value="Listening to music"> Listening to music</label>
@@ -223,15 +243,21 @@ select option {
 <label><input type="checkbox" name="interest" value="Hook-up"> Hook-up</label>
 <label><input type="checkbox" name="interest" value="Exploring"> New experiences / exploring</label>
 <label><input type="checkbox" name="interest" value="Not sure"> Not sure yet</label>
+</div>
+</div>
+  
+<div class="profile-section">
 
-<h3>Tell me about yourself ❤️</h3>
+  <h3>Tell me about yourself ❤️</h3>
 
-<textarea
-  id="bio"
-  placeholder="Tell us a little about yourself..."
-  rows="6"
-  maxlength="500"
-></textarea>
+  <textarea
+    id="bio"
+    placeholder="Tell us a little about yourself..."
+    rows="6"
+    maxlength="500"
+  ></textarea>
+
+</div>
 
 <button onclick="saveProfile()">Save Profile ❤️</button>
 
