@@ -223,26 +223,34 @@ function loadDistricts(){
   const state = document.getElementById("state").value;
   const district = document.getElementById("district");
   const city = document.getElementById("city");
-city.parentElement.style.display =
-  state === "Rajasthan" ? "block" : "none";
+
   district.innerHTML =
     '<option value="">Select district</option>';
 
   city.innerHTML =
     '<option value="">Select city</option>';
 
+  // City selection is only for Rajasthan
+  if(state === "Rajasthan"){
+    city.parentElement.style.display = "block";
+  } else {
+    city.parentElement.style.display = "none";
+  }
+
   const selectedState =
     locationData.find(item => item.state === state);
 
-  if(selectedState){
-
-    selectedState.districts
-      .sort()
-      .forEach(d => {
-        district.innerHTML +=
-          `<option value="${d}">${d}</option>`;
-      });
+  if(!selectedState){
+    return;
   }
+
+  selectedState.districts
+    .slice()
+    .sort((a,b) => a.localeCompare(b))
+    .forEach(d => {
+      district.innerHTML +=
+        `<option value="${d}">${d}</option>`;
+    });
 }
 
 function loadCities(){
