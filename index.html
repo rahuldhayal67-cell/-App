@@ -315,7 +315,7 @@ select option {
 <label><input type="checkbox" name="interest" value="Not sure"> Not sure yet</label>
 </div>
 </div>
-  
+  <div id="profilePage">
 <div class="profile-section">
 
   <h3>Tell me about yourself ❤️</h3>
@@ -330,8 +330,11 @@ select option {
 </div>
 
 <button onclick="saveProfile()">Save Profile ❤️</button>
-<div id="photoPage" class="card hidden">
-
+</div>
+  <div id="photoPage" class="card hidden" style="display:none;">
+<button onclick="backToProfile()">
+  ← Back
+</button>
   <h2>Upload Your Photos 📸</h2>
 
   <p class="small">
@@ -541,10 +544,17 @@ document.getElementById("profileMsg").textContent =
   "Profile saved ❤️";
 
 document.getElementById("photoPage").classList.remove("hidden");
+document.getElementById("photoPage").style.display = "block";
 
-document.getElementById("photoPage").scrollIntoView({
-  behavior:"smooth"
-});
+document.getElementById("profilePage").style.display = "none";
+}
+  function backToProfile(){
+
+  document.getElementById("photoPage").style.display = "none";
+  document.getElementById("photoPage").classList.add("hidden");
+
+  document.getElementById("profilePage").style.display = "block";
+
 }
   async function showApp(user){
 
