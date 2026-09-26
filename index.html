@@ -653,7 +653,20 @@ function showAuth(){
 db.auth.getSession().then(({data})=>{
  if(data.session) showApp(data.session.user);
 });
-document.getElementById("profilePhotos").addEventListener("change", function(){
+function continueToVerification(){
+
+  const files =
+    document.getElementById("profilePhotos").files;
+
+  if(files.length < 2 || files.length > 5){
+    alert("Please select between 2 and 5 photos.");
+    return;
+  }
+
+  alert("Photos accepted. Face verification will open next.");
+
+}
+  document.getElementById("profilePhotos").addEventListener("change", function(){
 
   const files = this.files;
   const preview = document.getElementById("photoPreview");
@@ -666,21 +679,61 @@ document.getElementById("profilePhotos").addEventListener("change", function(){
     return;
   }
 
-  [...files].forEach(file => {
+[...files].forEach((file, index) => {
 
-    const img = document.createElement("img");
+  const wrapper = document.createElement("div");
 
-    img.src = URL.createObjectURL(file);
+  wrapper.style.display = "inline-block";
+  wrapper.style.position = "relative";
+  wrapper.style.margin = "5px";
 
-    img.style.width = "100px";
-    img.style.height = "100px";
-    img.style.objectFit = "cover";
-    img.style.borderRadius = "12px";
-    img.style.margin = "5px";
+  const img = document.createElement("img");
 
-    preview.appendChild(img);
+  img.src = URL.createObjectURL(file);
 
-  });
+  img.style.width = "100px";
+  img.style.height = "100px";
+  img.style.objectFit = "cover";
+  img.style.borderRadius = "12px";
+
+  const removeBtn = document.createElement("button");
+
+  removeBtn.textContent = "×";
+  removeBtn.style.position = "absolute";
+  removeBtn.style.top = "2px";
+  removeBtn.style.right = "2px";
+  removeBtn.style.width = "28px";
+  removeBtn.style.height = "28px";
+  removeBtn.style.padding = "0";
+  removeBtn.style.borderRadius = "50%";
+  removeBtn.style.background = "#000";
+  removeBtn.style.color = "#fff";
+
+  removeBtn.onclick = function(){
+
+  const dt = new DataTransfer();
+
+  [...document.getElementById("profilePhotos").files]
+    .forEach((currentFile, currentIndex) => {
+
+      if(currentIndex !== index){
+        dt.items.add(currentFile);
+      }
+
+    });
+
+  document.getElementById("profilePhotos").files = dt.files;
+
+  wrapper.remove();
+
+};
+
+  wrapper.appendChild(img);
+  wrapper.appendChild(removeBtn);
+
+  preview.appendChild(wrapper);
+
+});
 
 });
 // Prevent iPhone pinch-to-zoom
