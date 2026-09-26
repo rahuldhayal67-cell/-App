@@ -62,6 +62,12 @@ body{
   font-family:Arial,sans-serif;
   background:#f5f5f5;
   color:#222;
+  touch-action:manipulation;
+}
+
+html{
+  touch-action:manipulation;
+  overscroll-behavior-x:none;
 }
 
 @media (prefers-color-scheme: dark){
@@ -207,7 +213,7 @@ select option {
 </div>
 
 <div id="app" class="card hidden">
-<h2>You're logged in ❤️</h2>
+<h2>You're logged in Connect</h2>
 <p id="user"></p>
 <h3>Create your profile</h3>
 
@@ -257,7 +263,7 @@ select option {
 </div>
 <div class="profile-section">
 
-  <h3>What are you into? ❤️</h3>
+  <h3>What are you into?</h3>
 
   <div class="interest-grid">
 
@@ -331,7 +337,7 @@ select option {
   <div id="profilePage">
 <div class="profile-section">
 
-  <h3>Tell me about yourself ❤️</h3>
+  <h3>Tell me about yourself</h3>
 
   <textarea
     id="bio"
@@ -342,13 +348,13 @@ select option {
 
 </div>
 
-<button onclick="saveProfile()">Save Profile ❤️</button>
+<button onclick="saveProfile()">Save Profile</button>
 </div>
   <div id="photoPage" class="card hidden"
      style="display:none; position:fixed; inset:0; z-index:9999; overflow-y:auto; margin:0; border-radius:0; width:100%; box-sizing:border-box;">
 <button
   onclick="backToProfile()"
-  style="position:absolute; top:16px; left:16px; z-index:10;"
+  style="position:absolute; top:16px; left:16px; z-index:10; width:auto; padding:8px 12px;"
 >
   ← Back
 </button>
@@ -369,7 +375,7 @@ select option {
   <div id="photoPreview"></div>
 
   <button onclick="continueToVerification()">
-    Continue to Face Verification ❤️
+    Continue to Face Verification 📷
   </button>
 
 </div>
