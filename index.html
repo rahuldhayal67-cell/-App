@@ -611,7 +611,10 @@ document.getElementById("profilePage").style.display = "none";
   document.getElementById("sex").value =
     profile.sex || "";
 
-  document.getElementById("state").value =
+  document.getElementById("interestedIn").value =
+  profile.interested_in || "";
+
+   document.getElementById("state").value =
     profile.state || "";
 
   loadDistricts();
