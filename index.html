@@ -408,7 +408,9 @@ select option {
   <button onclick="startVerification()">
     Start Verification
   </button>
-
+<button onclick="startVoiceCheck()">
+  🎤 Speak the Number
+</button>
 </div>
 <p id="profileMsg" class="small"></p>
 <button onclick="logout()">Logout</button>
@@ -807,8 +809,10 @@ document.addEventListener("touchend", function(e){
 
     video.srcObject = stream;
 
-    const number =
-      Math.floor(1000 + Math.random() * 9000);
+   const number =
+  Math.floor(1000 + Math.random() * 9000);
+
+window.verificationNumber = number;
 
     document.getElementById("verificationStatus").innerHTML =
       "Your verification number is:<br><strong style='font-size:32px;'>" +
@@ -821,6 +825,58 @@ document.addEventListener("touchend", function(e){
       "Camera permission was denied or unavailable.";
 
   }
+
+}
+function startVoiceCheck(){
+
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if(!SpeechRecognition){
+    alert("Voice recognition is not supported on this browser.");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+
+  recognition.lang = "en-IN";
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  document.getElementById("verificationStatus").textContent =
+    "Listening... Please say the 4-digit number.";
+
+  recognition.onresult = function(event){
+
+    const spokenText =
+      event.results[0][0].transcript.trim();
+
+    const expected =
+      String(window.verificationNumber);
+
+    if(spokenText.includes(expected)){
+
+      document.getElementById("verificationStatus").textContent =
+        "Number verified ❤️";
+
+    }else{
+
+      document.getElementById("verificationStatus").textContent =
+        "Number did not match. Please try again.";
+
+    }
+
+  };
+
+  recognition.onerror = function(){
+
+    document.getElementById("verificationStatus").textContent =
+      "Could not hear the number. Please try again.";
+
+  };
+
+  recognition.start();
 
 }
 </script>
