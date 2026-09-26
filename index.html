@@ -400,12 +400,46 @@ async function logout(){
  showAuth();
 }
 async function saveProfile(){
-  const name = document.getElementById("name").value;
+
+  const { data: { user } } = await db.auth.getUser();
+
+  if(!user){
+    document.getElementById("profileMsg").textContent =
+      "Please log in first.";
+    return;
+  }
+
+  const name = document.getElementById("name").value.trim();
   const age = document.getElementById("age").value;
-  const bio = document.getElementById("bio").value;
+  const sex = document.getElementById("sex").value;
+  const state = document.getElementById("state").value;
+  const district = document.getElementById("district").value;
+  const city = document.getElementById("city").value;
+
+  const selectedInterests =
+    [...document.querySelectorAll(".interest-grid input:checked")]
+      .map(input => input.value);
+
+  const bio = document.getElementById("bio").value.trim();
+
+  const { error } = await db
+    .from("profiles")
+    .upsert({
+      user_id: user.id,
+      name: name,
+      age: age ? parseInt(age) : null,
+      sex: sex,
+      state: state,
+      district: district,
+      city: city,
+      interests: JSON.stringify(selectedInterests),
+      bio: bio
+    }, {
+      onConflict: "user_id"
+    });
 
   document.getElementById("profileMsg").textContent =
-    "Profile saved ❤️";
+    error ? error.message : "Profile saved ❤️";
 }
 function showApp(user){
  document.getElementById("auth").classList.add("hidden");
