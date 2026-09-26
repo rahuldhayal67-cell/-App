@@ -5,7 +5,89 @@
 <title>Connect</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#f5f5f5;color:#222}
+  /* Professional profile sections */
+
+.profile-section{
+  background:#fff;
+  border:1px solid #e5e5e5;
+  border-radius:16px;
+  padding:18px;
+  margin:18px 0;
+}
+
+.profile-section h3{
+  margin-top:0;
+  margin-bottom:16px;
+}
+
+.section-label{
+  font-size:16px;
+  font-weight:700;
+  margin:18px 0 10px;
+}
+
+.interest-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.interest-grid label{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px;
+  border:1px solid #e5e5e5;
+  border-radius:10px;
+}
+
+@media (max-width:600px){
+  .interest-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+textarea{
+  width:100%;
+  box-sizing:border-box;
+  resize:vertical;
+  border:1px solid #ddd;
+  border-radius:12px;
+  padding:14px;
+  font-size:16px;
+  font-family:Arial,sans-serif;
+}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f5f5;
+  color:#222;
+}
+
+@media (prefers-color-scheme: dark){
+  body{
+    background:#111;
+    color:#eee;
+  }
+
+  .card{
+    background:#1c1c1e;
+    color:#eee;
+  }
+
+  input,
+  select,
+  textarea{
+    background:#2c2c2e;
+    color:#fff;
+    border-color:#555;
+  }
+
+  input::placeholder,
+  textarea::placeholder{
+    color:#aaa;
+  }
+}
 .box{max-width:420px;margin:auto;padding:25px}
 h1{text-align:center;color:#ff3366}
 input,button{width:100%;box-sizing:border-box;padding:14px;margin:7px 0;border-radius:10px;border:1px solid #ddd;font-size:16px}
@@ -142,7 +224,14 @@ select option {
 <label><input type="checkbox" name="interest" value="Exploring"> New experiences / exploring</label>
 <label><input type="checkbox" name="interest" value="Not sure"> Not sure yet</label>
 
-<textarea id="bio" placeholder="Tell something about yourself"></textarea>
+<h3>Tell me about yourself ❤️</h3>
+
+<textarea
+  id="bio"
+  placeholder="Tell us a little about yourself..."
+  rows="6"
+  maxlength="500"
+></textarea>
 
 <button onclick="saveProfile()">Save Profile ❤️</button>
 
