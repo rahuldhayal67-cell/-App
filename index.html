@@ -325,7 +325,28 @@ select option {
 </div>
 
 <button onclick="saveProfile()">Save Profile ❤️</button>
+<div id="photoPage" class="card hidden">
 
+  <h2>Upload Your Photos 📸</h2>
+
+  <p class="small">
+    Add 2 to 5 photos to create your profile.
+  </p>
+
+  <input
+    type="file"
+    id="profilePhotos"
+    accept="image/*"
+    multiple
+  >
+
+  <div id="photoPreview"></div>
+
+  <button onclick="continueToVerification()">
+    Continue to Face Verification ❤️
+  </button>
+
+</div>
 <p id="profileMsg" class="small"></p>
 <button onclick="logout()">Logout</button>
 </div>
@@ -576,7 +597,36 @@ function showAuth(){
 db.auth.getSession().then(({data})=>{
  if(data.session) showApp(data.session.user);
 });
+document.getElementById("profilePhotos").addEventListener("change", function(){
 
+  const files = this.files;
+  const preview = document.getElementById("photoPreview");
+
+  preview.innerHTML = "";
+
+  if(files.length < 2 || files.length > 5){
+    alert("Please select between 2 and 5 photos.");
+    this.value = "";
+    return;
+  }
+
+  [...files].forEach(file => {
+
+    const img = document.createElement("img");
+
+    img.src = URL.createObjectURL(file);
+
+    img.style.width = "100px";
+    img.style.height = "100px";
+    img.style.objectFit = "cover";
+    img.style.borderRadius = "12px";
+    img.style.margin = "5px";
+
+    preview.appendChild(img);
+
+  });
+
+});
 </script>
 
 </body>
