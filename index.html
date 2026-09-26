@@ -792,7 +792,7 @@ document.addEventListener("touchend", function(e){
   lastTouchEnd = now;
 
 }, {passive:false});
-  async function startVerification(){
+ async function startVerification(){
 
   const video = document.getElementById("verificationCamera");
 
@@ -807,8 +807,13 @@ document.addEventListener("touchend", function(e){
 
     video.srcObject = stream;
 
-    document.getElementById("verificationStatus").textContent =
-      "Camera is active. Look at the camera.";
+    const number =
+      Math.floor(1000 + Math.random() * 9000);
+
+    document.getElementById("verificationStatus").innerHTML =
+      "Your verification number is:<br><strong style='font-size:32px;'>" +
+      number +
+      "</strong><br><br>Remember this number.";
 
   }catch(error){
 
