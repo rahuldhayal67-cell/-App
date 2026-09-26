@@ -4,7 +4,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Connect</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
+<script type="module">
+import { FaceLandmarker, FilesetResolver }
+from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.mjs";
+
+window.FaceLandmarker = FaceLandmarker;
+window.FilesetResolver = FilesetResolver;
+</script>
+  <style>
   /* Professional profile sections */
 
 .profile-section{
@@ -880,8 +887,22 @@ function startVoiceCheck(){
 
     if(spokenText.includes(expected)){
 
-      document.getElementById("verificationStatus").textContent =
-        "Number verified";
+  const movements = [
+    "👈 Turn your head LEFT",
+    "👉 Turn your head RIGHT",
+    "⬆️ Look UP",
+    "⬇️ Look DOWN"
+  ];
+
+  const movement =
+    movements[Math.floor(Math.random() * movements.length)];
+
+  document.getElementById("verificationStatus").innerHTML =
+    "Number verified<br><br><strong>" +
+    movement +
+    "</strong>";
+
+}else{
 
     }else{
 
