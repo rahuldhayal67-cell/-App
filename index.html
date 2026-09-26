@@ -524,9 +524,20 @@ async function saveProfile(){
       onConflict: "user_id"
     });
 
+  if(error){
   document.getElementById("profileMsg").textContent =
-    error ? error.message : "Profile saved ❤️";
+    error.message;
+  return;
 }
+
+document.getElementById("profileMsg").textContent =
+  "Profile saved ❤️";
+
+document.getElementById("photoPage").classList.remove("hidden");
+
+document.getElementById("photoPage").scrollIntoView({
+  behavior:"smooth"
+});
 async function showApp(user){
 
   document.getElementById("auth").classList.add("hidden");
