@@ -74,7 +74,11 @@ body{
     background:#1c1c1e;
     color:#eee;
   }
-
+button{
+  background:#fff;
+  color:#000;
+  border-color:#fff;
+}
   input,
   select,
   textarea{
@@ -91,7 +95,7 @@ body{
 .box{max-width:420px;margin:auto;padding:25px}
 h1{text-align:center;color:#ff3366}
 input,button{width:100%;box-sizing:border-box;padding:14px;margin:7px 0;border-radius:10px;border:1px solid #ddd;font-size:16px}
-button{background:#ff3366;color:white;border:0;font-weight:bold}
+button{background:#000;color:#fff;border:1px solid #000;font-weight:bold}
 .card{background:white;border-radius:18px;padding:20px;margin-top:20px;box-shadow:0 3px 15px #ddd}
 .hidden{display:none}
 .small{text-align:center;color:#666;font-size:14px}
@@ -170,6 +174,15 @@ select option {
 
   .small{
     color:#aaa;
+  }
+}
+.logo-heart{
+  color:#000;
+}
+
+@media (prefers-color-scheme: dark){
+  .logo-heart{
+    color:#fff;
   }
 }
 </style>
