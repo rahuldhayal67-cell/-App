@@ -506,10 +506,66 @@ async function saveProfile(){
   document.getElementById("profileMsg").textContent =
     error ? error.message : "Profile saved ❤️";
 }
-function showApp(user){
- document.getElementById("auth").classList.add("hidden");
- document.getElementById("app").classList.remove("hidden");
- document.getElementById("user").textContent="Logged in as "+user.email;
+async function showApp(user){
+
+  document.getElementById("auth").classList.add("hidden");
+  document.getElementById("app").classList.remove("hidden");
+  document.getElementById("user").textContent =
+    "Logged in as " + user.email;
+
+  const { data: profile, error } = await db
+    .from("profiles")
+    .select("*")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if(error){
+    console.error(error);
+    return;
+  }
+
+  if(!profile){
+    return;
+  }
+
+  document.getElementById("name").value =
+    profile.name || "";
+
+  document.getElementById("age").value =
+    profile.age || "";
+
+  document.getElementById("sex").value =
+    profile.sex || "";
+
+  document.getElementById("state").value =
+    profile.state || "";
+
+  loadDistricts();
+
+  document.getElementById("district").value =
+    profile.district || "";
+
+  loadCities();
+
+  document.getElementById("city").value =
+    profile.city || "";
+
+  document.getElementById("bio").value =
+    profile.bio || "";
+
+  let savedInterests = [];
+
+  try{
+    savedInterests = JSON.parse(profile.interests || "[]");
+  }catch(e){
+    savedInterests = [];
+  }
+
+  document
+    .querySelectorAll(".interest-grid input[type='checkbox']")
+    .forEach(input => {
+      input.checked = savedInterests.includes(input.value);
+    });
 }
 
 function showAuth(){
